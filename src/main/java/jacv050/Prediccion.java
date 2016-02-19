@@ -28,14 +28,14 @@ public class Prediccion {
     }
     
     public Prediccion(String nombreFichero){
-        
+        Reglas reglas = new Reglas();
         try {
             FileReader fr = new FileReader(nombreFichero);        
             BufferedReader br = new BufferedReader(fr);
             String cadena = "";
         
             while((cadena = br.readLine()) != null){
-                String[] splitted = cadena.split(" ");
+                reglas.addRegla(cadena);
             }
             
             br.close();
