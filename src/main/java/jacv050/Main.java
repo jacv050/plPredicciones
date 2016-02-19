@@ -12,7 +12,7 @@ package jacv050;
 public class Main {
     public static void main(String[] args){
         if(args.length == 1){
-            Prediccion prediccion = new Prediccion(args[1]);
+            Prediccion prediccion = new Prediccion(args[0]);
         }else{
             System.err.println("Debe escribir el nombre de fichero como parametro.");
         }
