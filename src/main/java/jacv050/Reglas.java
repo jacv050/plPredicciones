@@ -38,6 +38,12 @@ public class Reglas {
         reglas.add(new Regla(splitted[0], parteDerecha));
     }
     
+    public ArrayList<String> getListaSimbolosNoTerminales(){
+        return noTerminales;
+    }
+    /*public boolean isTerminal(String[]){
+        
+    }*/
 }
 
 
@@ -51,6 +57,10 @@ class Regla{
     }
     
     public String getString(){
+        return parteIzquierda;
+    }
+    
+    public String getParteIzquierda(){
         return parteIzquierda;
     }
     

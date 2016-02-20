@@ -19,27 +19,41 @@ import java.util.logging.Logger;
  */
 public class Prediccion {
  
-    private static ArrayList<String> getPrimeros(String[] regla){
+    private Reglas mReglas;
+    private 
+            
+    /**
+     * Devuelve el conjunto de primeros pertenecientes a un simbolo no terminal
+     * @param simboloNoTerminal El simbolo no terminal del que queremos el conjunto de primeros
+     * @return Conjunto de primeros del simbolo no terminal
+     */
+    private static ArrayList<String> getPrimeros(String simboloNoTerminal){
         ArrayList<String> salida = new ArrayList<>();
         
+         
         //salida.add(e)
         
         return salida;
     }
     
     public Prediccion(String nombreFichero){
-        Reglas reglas = new Reglas();
+        mReglas = new Reglas();
         try {
             FileReader fr = new FileReader(nombreFichero);        
             BufferedReader br = new BufferedReader(fr);
             String cadena = "";
         
             while((cadena = br.readLine()) != null){
-                reglas.addRegla(cadena);
+                mReglas.addRegla(cadena);
             }
             
             br.close();
             fr.close();
+            
+            ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
+            for(String noTerminal : noTerminales){
+                
+            }
             
         } catch (FileNotFoundException ex) {
             System.err.println("No se ha encontrado el archivo.");
