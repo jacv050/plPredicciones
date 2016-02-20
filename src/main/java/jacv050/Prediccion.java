@@ -20,20 +20,23 @@ import java.util.logging.Logger;
 public class Prediccion {
  
     private Reglas mReglas;
-    private 
+    private ConjuntosPrimeros mPrimeros;
+    private ConjuntosSiguientes mSiguientes;
             
     /**
      * Devuelve el conjunto de primeros pertenecientes a un simbolo no terminal
      * @param simboloNoTerminal El simbolo no terminal del que queremos el conjunto de primeros
      * @return Conjunto de primeros del simbolo no terminal
      */
-    private static ArrayList<String> getPrimeros(String simboloNoTerminal){
-        ArrayList<String> salida = new ArrayList<>();
+    private void obtainPrimeros(String simboloNoTerminal){
+        //ArrayList<String> salida = new ArrayList<>();
+                    
+        ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
+        for(String noTerminal : noTerminales){
+               //mReglas.get
+        }
         
-         
-        //salida.add(e)
         
-        return salida;
     }
     
     public Prediccion(String nombreFichero){
@@ -50,10 +53,6 @@ public class Prediccion {
             br.close();
             fr.close();
             
-            ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
-            for(String noTerminal : noTerminales){
-                
-            }
             
         } catch (FileNotFoundException ex) {
             System.err.println("No se ha encontrado el archivo.");

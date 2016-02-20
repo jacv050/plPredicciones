@@ -12,59 +12,83 @@ import java.util.ArrayList;
  * @author jacv050
  */
 public class Reglas {
-    
-    ArrayList<Regla> reglas;
-    ArrayList<String> noTerminales;
+
+    ArrayList<Regla> mReglas;
+    ArrayList<String> mNoTerminales;
     //ArrayList<String> terminales;
-    
-    public Reglas(){
-        reglas = new ArrayList<>();
-        noTerminales = new ArrayList<>();
+
+    public Reglas() {
+        mReglas = new ArrayList<>();
+        mNoTerminales = new ArrayList<>();
         //terminales = new ArrayList<String>();
-        
+
     }
-            
-    public void addRegla(String regla){
+
+    public void addRegla(String regla) {
         String[] splitted = regla.split(" ");
-        
-        if(!noTerminales.contains(splitted[0]))
-            noTerminales.add(splitted[0]);
-        
+
+        if (!mNoTerminales.contains(splitted[0])) {
+            mNoTerminales.add(splitted[0]);
+        }
+
         ArrayList<String> parteDerecha = new ArrayList<>();
-        for(int i =2; i<splitted.length; ++i){
+        for (int i = 2; i < splitted.length; ++i) {
             parteDerecha.add(splitted[i]);
         }
-        
-        reglas.add(new Regla(splitted[0], parteDerecha));
-    }
-    
-    public ArrayList<String> getListaSimbolosNoTerminales(){
-        return noTerminales;
-    }
-    /*public boolean isTerminal(String[]){
-        
-    }*/
-}
 
+        mReglas.add(new Regla(splitted[0], parteDerecha));
+    }
 
-class Regla{
-    private String parteIzquierda;
-    private ArrayList<String> parteDerecha;
-    
-    public Regla(String parteIzquierda, ArrayList<String> parteDerecha){
-        this.parteIzquierda = parteIzquierda;
-        this.parteDerecha = parteDerecha;
+    public ArrayList<String> getListaSimbolosNoTerminales() {
+        return mNoTerminales;
     }
-    
-    public String getString(){
-        return parteIzquierda;
+
+    /**
+     * Devuelve las reglas con simbolos en la parte izquierda igual al pasado
+     * por parametro
+     *
+     * @param simboloParteIzquierda
+     * @return
+     */
+    public ArrayList<Regla> getReglas(String simboloParteIzquierda) {
+        ArrayList<Regla> salida = new ArrayList<>();
+
+        //mReglas.stream().filter((regla) -> (regla.getParteIzquierda().equals(simboloParteIzquierda))).forEach(salida::add);
+        //codigo equivalente
+        for (Regla regla : mReglas) {
+            if (regla.getParteIzquierda().equals(regla.getParteIzquierda())) {
+                salida.add(regla);
+            }
+        }
+
+        return salida;
     }
-    
-    public String getParteIzquierda(){
-        return parteIzquierda;
-    }
-    
-    public ArrayList<String> getParteDerecha(){
-        return parteDerecha;
+
+    public class Regla {
+
+        private final String parteIzquierda;
+        private final ArrayList<String> parteDerecha;
+
+        public Regla(Regla regla) {
+            parteIzquierda = regla.getParteIzquierda();
+            parteDerecha = new ArrayList<>(regla.getParteDerecha());
+        }
+
+        public Regla(String parteIzquierda, ArrayList<String> parteDerecha) {
+            this.parteIzquierda = parteIzquierda;
+            this.parteDerecha = parteDerecha;
+        }
+
+        public String getString() {
+            return parteIzquierda;
+        }
+
+        public String getParteIzquierda() {
+            return parteIzquierda;
+        }
+
+        public ArrayList<String> getParteDerecha() {
+            return parteDerecha;
+        }
     }
 }
