@@ -47,7 +47,7 @@ public class ConjuntosPrimeros {
         ArrayList<String> primerosTotal = mPrimeros.get(noTerminal);
         
         if(primerosTotal == null)
-            return primeros;
+            return null;
         
         for(String simbolo : primerosTotal){
             if(!simbolo.equals(Reglas.EPSILON))

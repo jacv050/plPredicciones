@@ -42,6 +42,7 @@ public class Prediccion {
             }
             
             obtainPrimeros();
+            obtainSiguientes();
             generarSalida();
 
             br.close();
@@ -73,6 +74,19 @@ public class Prediccion {
                 pw.println();
             }
             
+            pw.println();
+            //Salida de los siguientes
+            for(String noTerminal : noTerminales){
+                pw.print(noTerminal + " -> { ");
+                ArrayList<String> siguientes = mSiguientes.getSiguientes(noTerminal);
+                for(String siguiente : siguientes){
+                    pw.print(siguiente + " ");
+                }
+                pw.print("}");
+                
+                pw.println();
+            }
+            
             pw.close();
             fw.close();
         } catch (IOException ex) {
@@ -87,6 +101,55 @@ public class Prediccion {
     
     public boolean obtainSiguientesAux(String noTerminal){
         
+        ArrayList<Reglas.Regla> reglas = mReglas.getReglasSimboloDerecha(noTerminal);
+        
+        for(Reglas.Regla regla : reglas){
+            ArrayList<String> parteDerecha = regla.getParteDerecha();
+            int posicionSimbolo = parteDerecha.indexOf(noTerminal);
+            
+            //Si hay simbolos a la derecha del simbolo no terminal
+            if(posicionSimbolo < parteDerecha.size()-1){
+                if(!mReglas.esTerminal(parteDerecha.get(posicionSimbolo+1))){
+                    ArrayList<String> primerosSinEpsilon = mPrimeros.getPrimerosSinEpsilon(parteDerecha.get(posicionSimbolo+1));
+                    ArrayList<String> primerosConEpsilon = mPrimeros.getPrimeros(parteDerecha.get(posicionSimbolo+1));
+                    mSiguientes.addSiguientes(noTerminal, primerosSinEpsilon);
+                    
+                    //Si epsilon pertence a siguientes(posicion+1)
+                    if(primerosSinEpsilon.size() != primerosConEpsilon.size()){
+                        ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
+                        
+                        //Si aun no se han calculado siguientes devolver false
+                        if(siguientes == null)
+                            return false;
+                        
+                        //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
+                        mSiguientes.addSiguientes(noTerminal, siguientes);
+                    }
+                }else if(mReglas.esEpsilon(parteDerecha.get(posicionSimbolo+1))){
+                    ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
+                        
+                    //Si aun no se han calculado siguientes devolver false
+                    if(siguientes == null)
+                        return false;
+                        
+                    //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
+                    mSiguientes.addSiguientes(noTerminal, siguientes);
+                }else//Si es terminal anyadimos el simbolo como siguiente de noterminal
+                    mSiguientes.addSiguientes(noTerminal, parteDerecha.get(posicionSimbolo+1));
+            }else{
+                //Comprobar si realmente debo anyadir los siguientes de la parteizquierda cuando el
+                //sombolo no terminal de la parte derecha no tiene simbolos a su derecha
+                ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
+                
+                //Si aun no se han calculado siguientes devolver false
+                if(siguientes == null)
+                    return false;
+                
+                //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
+                mSiguientes.addSiguientes(noTerminal, siguientes);
+            }
+        }
+        
         return true;
     }
     
@@ -98,7 +161,7 @@ public class Prediccion {
         ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
         
         //Anyadimos el simbolo inicial
-        
+        mSiguientes.addSiguientes(noTerminales.get(0), Reglas.INICIAL);
         
         do{
             procesados = true;
@@ -107,7 +170,7 @@ public class Prediccion {
                     simboloProcesados[i] = obtainSiguientesAux(noTerminales.get(i));
             }
             
-            //Comprobamos si hemos encontrado todos los primeros
+            //Comprobamos si hemos encontrado todos los primerosSinEpsilon
             for(boolean sp : simboloProcesados){
                 procesados &= sp;
             }
@@ -115,11 +178,11 @@ public class Prediccion {
     }
     
     /**
-     * Devuelve el conjunto de primeros pertenecientes a un simbolo no terminal
+     * Devuelve el conjunto de primerosSinEpsilon pertenecientes a un simbolo no terminal
      *
      * @param simboloNoTerminal El simbolo no terminal del que queremos el
-     * conjunto de primeros
-     * @return Devuelve si ha sido capaz de obtener los primeros del simbolo
+ conjunto de primerosSinEpsilon
+     * @return Devuelve si ha sido capaz de obtener los primerosSinEpsilon del simbolo
      */
     private boolean obtainPrimerosAux(String noTerminal) {
         //Obtenemos las reglas en las que aparece el simbolo terminal en la
@@ -130,7 +193,7 @@ public class Prediccion {
         for (Reglas.Regla regla : reglas) {
             ArrayList<String> parteDerecha = regla.getParteDerecha();
 
-            //Analizamos la parte derecha y obtenemos los primeros
+            //Analizamos la parte derecha y obtenemos los primerosSinEpsilon
             
             //Si es epsilon
             String simbolo = parteDerecha.get(0);
@@ -141,26 +204,26 @@ public class Prediccion {
                 mPrimeros.addPrimeros(regla.getParteIzquierda(), simbolo);
             } //Si es no terminal
             else {
-                //Si epsilon pertenece a primeros(simbolo) 
+                //Si epsilon pertenece a primerosSinEpsilon(simbolo) 
                 ArrayList<String> primerosConEpsilon = mPrimeros.getPrimeros(simbolo); //Con epsilon si tuviese
                 
-                //Si aun no se han calculado los primeros
+                //Si aun no se han calculado los primerosSinEpsilon
                 if(primerosConEpsilon.isEmpty())
                     return false;
                 
-                //Obtenemos los primeros de simbolo -> primeros(simbolo)
+                //Obtenemos los primerosSinEpsilon de simbolo -> primerosSinEpsilon(simbolo)
                 ArrayList<String> primerosSinEpsilon = mPrimeros.getPrimerosSinEpsilon(simbolo);
-                //Anyadimos el conjunto de primeros(simbolo) a los primeros(noTerminal)
+                //Anyadimos el conjunto de primerosSinEpsilon(simbolo) a los primerosSinEpsilon(noTerminal)
                 for (String primero : primerosSinEpsilon) {
                     mPrimeros.addPrimeros(noTerminal, primero);
                 }
                 
                 if (primerosSinEpsilon.size() != primerosConEpsilon.size()) {
-                    //Si solo tiene epsilon entonces anyadimos epsilon a primeros(noTerminal)
+                    //Si solo tiene epsilon entonces anyadimos epsilon a primerosSinEpsilon(noTerminal)
                     if (primerosConEpsilon.size() == 1) {
                         mPrimeros.addPrimeros(noTerminal, Reglas.EPSILON);
                     } else {
-                        //Hay que añadir los primeros del resto de simbolos
+                        //Hay que añadir los primerosSinEpsilon del resto de simbolos
                         //de la parte derecha "noTerminal"
                         for (int i = 1; i < parteDerecha.size(); ++i) {
                             boolean esTerminal = mReglas.esTerminal(parteDerecha.get(i));
@@ -199,7 +262,7 @@ public class Prediccion {
                     simboloProcesados[i] = obtainPrimerosAux(noTerminales.get(i));
             }
             
-            //Comprobamos si hemos encontrado todos los primeros
+            //Comprobamos si hemos encontrado todos los primerosSinEpsilon
             for(boolean sp : simboloProcesados){
                 procesados &= sp;
             }

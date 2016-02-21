@@ -67,6 +67,17 @@ public class Reglas {
         return salida;
     }
 
+    public ArrayList<Regla> getReglasSimboloDerecha(String simboloParteDerecha){
+        ArrayList<Regla> salida = new ArrayList<>();
+        
+        for(Regla regla : mReglas){
+            if(regla.getParteDerecha().contains(simboloParteDerecha))
+                salida.add(regla);
+        }
+        
+        return salida;
+    }
+    
     /**
      * Devuelve true si es un simbolo terminal
      * @param simbolo
