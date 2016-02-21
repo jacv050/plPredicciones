@@ -73,7 +73,7 @@ public class ConjuntosPrimeros {
             }
             //newprimeros.stream().forEach(primeros::add);
         } else {
-            mPrimeros.put(noTerminal, newprimeros);
+            mPrimeros.put(noTerminal, new ArrayList(newprimeros));
         }
     }
 

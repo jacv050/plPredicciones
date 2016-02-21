@@ -31,6 +31,7 @@ public class Prediccion {
         this.nombreFichero = nombreFichero;
         mReglas = new Reglas();
         mPrimeros = new ConjuntosPrimeros();
+        mSiguientes = new ConjuntosSiguientes();
         
         try {
             FileReader fr = new FileReader(nombreFichero);

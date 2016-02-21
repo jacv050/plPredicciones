@@ -1,3 +1,7 @@
 A -> { big cat cow bad }
 B -> { big epsilon }
 C -> { cat cow }
+
+A -> { $ boss }
+B -> { cat cow }
+C -> { $ boss }

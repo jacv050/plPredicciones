@@ -15,6 +15,10 @@ import java.util.HashMap;
 public class ConjuntosSiguientes {
     HashMap<String, ArrayList<String>> mSiguientes;
     
+    public ConjuntosSiguientes(){
+        mSiguientes = new HashMap<>();
+    }
+    
     /**
      * Devuleve el conjunto de primeros de un simbolo no terminal
      * @param noTerminal
@@ -38,7 +42,7 @@ public class ConjuntosSiguientes {
             }
             //newprimeros.stream().forEach(primeros::add);
         } else {
-            mSiguientes.put(noTerminal, newsiguientes);
+            mSiguientes.put(noTerminal, new ArrayList(newsiguientes));
         }
     }
     
