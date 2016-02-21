@@ -1,0 +1,3 @@
+A -> { big bus cat cow ant }
+B -> { big bus epsilon }
+C -> { cat cow }

@@ -1,0 +1,5 @@
+S -> { seis cuatro cinco tres uno epsilon dos }
+A -> { seis cuatro cinco tres epsilon }
+B -> { seis cuatro cinco epsilon tres }
+C -> { cinco epsilon }
+D -> { seis epsilon }

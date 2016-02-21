@@ -76,10 +76,14 @@ public class Prediccion {
                         //Hay que añadir los primeros del resto de simbolos
                         //de la parte derecha "noTerminal"
                         for (int i = 1; i < parteDerecha.size(); ++i) {
-                            if(!mPrimeros.exists(parteDerecha.get(i)))
+                            boolean esTerminal = mReglas.esTerminal(parteDerecha.get(i));
+                            if(!mPrimeros.exists(parteDerecha.get(i)) && !esTerminal)
                                 return false;
                             
-                            mPrimeros.addPrimeros(noTerminal, mPrimeros.getPrimeros(parteDerecha.get(i)));
+                            if(esTerminal)
+                                mPrimeros.addPrimeros(noTerminal, parteDerecha.get(i));
+                            else
+                                mPrimeros.addPrimeros(noTerminal, mPrimeros.getPrimeros(parteDerecha.get(i)));
                         }
                     }
                 }
@@ -169,4 +173,8 @@ public class Prediccion {
         
     }
 
+    public ConjuntosPrimeros getConjuntosPrimeros(){
+        return mPrimeros;
+    }
+    
 }
