@@ -86,22 +86,22 @@ public class ObtencionSiguientesTest {
         //HAY QUE MIRAR EL RESTOS DE SIMBOLOS SI EL SIMBOLO INTERNO NO ES TERMINAL
         String ficheroEntrada = "reglas3.txt";
         mPrediccion = new Prediccion(ficheroEntrada);
-        ConjuntosPrimeros real = mPrediccion.getConjuntosPrimeros();
+        ConjuntosSiguientes real = mPrediccion.getConjuntosSiguientes();
         
-        List<String> esperadoA = Arrays.asList("dos", "epsilon");
-        List<String> esperadoB = Arrays.asList("epsilon", "cuatro");
-        List<String> esperadoC = Arrays.asList("seis", "epsilon");
-        List<String> esperadoD = Arrays.asList("uno", "epsilon", "cuatro");
-        List<String> esperadoE = Arrays.asList("tres");
-        List<String> esperadoS = Arrays.asList("dos", "cuatro", "seis", "epsilon", "uno", "tres");
+        List<String> esperadoA = Arrays.asList("tres", "cuatro", "$", "cinco", "seis");
+        List<String> esperadoB = Arrays.asList("seis", "cinco", "$", "tres", "cuatro");
+        List<String> esperadoC = Arrays.asList("cinco", "$");
+        List<String> esperadoD = Arrays.asList("tres");
+        List<String> esperadoE = Arrays.asList("$", "tres");
+        List<String> esperadoS = Arrays.asList("$", "tres");
         
         
-        assertEqualsConjuntos(esperadoA, real.getPrimeros("A"));
-        assertEqualsConjuntos(esperadoB, real.getPrimeros("B"));
-        assertEqualsConjuntos(esperadoC, real.getPrimeros("C"));
-        assertEqualsConjuntos(esperadoD, real.getPrimeros("D"));
-        assertEqualsConjuntos(esperadoE, real.getPrimeros("E"));
-        assertEqualsConjuntos(esperadoS, real.getPrimeros("S"));
+        assertEqualsConjuntos(esperadoA, real.getSiguientes("A"));
+        assertEqualsConjuntos(esperadoB, real.getSiguientes("B"));
+        assertEqualsConjuntos(esperadoC, real.getSiguientes("C"));
+        assertEqualsConjuntos(esperadoD, real.getSiguientes("D"));
+        assertEqualsConjuntos(esperadoE, real.getSiguientes("E"));
+        assertEqualsConjuntos(esperadoS, real.getSiguientes("S"));
         //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
     }
     // TODO add test methods here.
