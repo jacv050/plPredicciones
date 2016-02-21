@@ -13,27 +13,91 @@ import java.util.HashMap;
  * @author jacv050
  */
 public class ConjuntosPrimeros {
+
     HashMap<String, ArrayList<String>> mPrimeros;
-    
-    /**
-     * Devuleve el conjunto de primeros de un simbolo no terminal
-     * @param noTerminal
-     * @return 
-     */
-    public ArrayList<String> getPrimeros(String noTerminal){
-        return mPrimeros.get(noTerminal);
+
+    public ConjuntosPrimeros(){
+        mPrimeros = new HashMap<>();
     }
     
     /**
+     * Devuleve el conjunto de primeros de un simbolo no terminal
+     *
+     * @param noTerminal
+     * @return
+     */
+    public ArrayList<String> getPrimeros(String noTerminal) {
+        
+        ArrayList<String> salida = mPrimeros.get(noTerminal);
+        
+        if(salida == null)
+            salida = new ArrayList<>();
+        
+        return salida;
+    }
+    
+    
+    /**
+     * Devuelve el conjunto de primeros de un simbolo no terminal menos epsilon
+     * @param noTerminal 
+     * @return 
+     */
+    public ArrayList<String> getPrimerosSinEpsilon(String noTerminal){
+        ArrayList<String> primeros = new ArrayList<>();
+        ArrayList<String> primerosTotal = mPrimeros.get(noTerminal);
+        
+        if(primerosTotal == null)
+            return primeros;
+        
+        for(String simbolo : primerosTotal){
+            if(!simbolo.equals(Reglas.EPSILON))
+                primeros.add(simbolo);
+        }
+        /*mPrimeros.get(noTerminal).stream().filter((simbolo) -> (!simbolo.equals(Reglas.EPSILON))).forEach((simbolo) -> {
+            primeros.add(simbolo);
+        });*/
+        return primeros;
+    }
+
+    /**
      * Anyade nuevos primeros a un simbolo no terminal
      * @param noTerminal
-     * @param newprimeros 
+     * @param newprimeros
      */
-    public void addPrimeros(String noTerminal, ArrayList<String> newprimeros){
-        if(mPrimeros.containsKey(noTerminal)){
+    public void addPrimeros(String noTerminal, ArrayList<String> newprimeros) {
+        if (mPrimeros.containsKey(noTerminal)) {
             ArrayList<String> primeros = mPrimeros.get(noTerminal);
-            newprimeros.stream().forEach(primeros::add);
-        }else
+            for(String primero : newprimeros){
+                if(!primeros.contains(primero))
+                    primeros.add(primero);
+            }
+            //newprimeros.stream().forEach(primeros::add);
+        } else {
             mPrimeros.put(noTerminal, newprimeros);
+        }
+    }
+
+    /**
+     * Anyade nuevos primeros a un simbolo no terminal
+     *
+     * @param noTerminal
+     * @param newprimeros
+     */
+    public void addPrimeros(String noTerminal, String newprimeros) {
+        ArrayList<String> primeros;
+        if (mPrimeros.containsKey(noTerminal)) {
+            primeros = mPrimeros.get(noTerminal);
+            if(!primeros.contains(newprimeros))
+                primeros.add(newprimeros);
+        } else {
+            primeros = new ArrayList();
+            primeros.add(newprimeros);
+            mPrimeros.put(noTerminal, primeros);
+
+        }
+    }
+    
+    public boolean exists(String noTerminal){
+        return mPrimeros.containsKey(noTerminal);
     }
 }

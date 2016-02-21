@@ -17,6 +17,8 @@ public class Reglas {
     ArrayList<String> mNoTerminales;
     //ArrayList<String> terminales;
 
+    public final static String EPSILON = "epsilon";
+    
     public Reglas() {
         mReglas = new ArrayList<>();
         mNoTerminales = new ArrayList<>();
@@ -56,7 +58,7 @@ public class Reglas {
         //mReglas.stream().filter((regla) -> (regla.getParteIzquierda().equals(simboloParteIzquierda))).forEach(salida::add);
         //codigo equivalente
         for (Regla regla : mReglas) {
-            if (regla.getParteIzquierda().equals(regla.getParteIzquierda())) {
+            if (regla.getParteIzquierda().equals(simboloParteIzquierda)) {
                 salida.add(regla);
             }
         }
@@ -64,6 +66,24 @@ public class Reglas {
         return salida;
     }
 
+    /**
+     * Devuelve true si es un simbolo terminal
+     * @param simbolo
+     * @return 
+     */
+    public boolean esTerminal(String simbolo){
+        return !mNoTerminales.contains(simbolo);
+    }
+    
+    /**
+     * Devuelve true si el simbolo es epsilon
+     * @param simbolo
+     * @return 
+     */
+    public boolean esEpsilon(String simbolo){
+        return simbolo.equals(EPSILON);
+    }
+    
     public class Regla {
 
         private final String parteIzquierda;
