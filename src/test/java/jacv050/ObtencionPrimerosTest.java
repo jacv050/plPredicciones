@@ -49,7 +49,7 @@ public class ObtencionPrimerosTest {
         }
     }
     
-    @Test
+    /*@Test
     public void C1Reglas1Test(){
         String ficheroEntrada = "reglas1.txt";
         mPrediccion = new Prediccion(ficheroEntrada);
@@ -81,7 +81,7 @@ public class ObtencionPrimerosTest {
         assertEqualsConjuntos(esperadoC, real.getPrimeros("C"));
         //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
     }
-    
+    */
     @Test
     public void C3Reglas3Test(){
         //HAY QUE MIRAR EL RESTOS DE SIMBOLOS SI EL SIMBOLO INTERNO NO ES TERMINAL

@@ -187,15 +187,22 @@ public class Prediccion {
      *
      * @param simboloNoTerminal El simbolo no terminal del que queremos el
  conjunto de primerosSinEpsilon
+            ArrayList<String> parteDerecha = regla.getParteDerecha();
      * @return Devuelve si ha sido capaz de obtener los primerosSinEpsilon del simbolo
      */
     private boolean obtainPrimerosAux(String noTerminal) {
         //Obtenemos las reglas en las que aparece el simbolo terminal en la
         //parte izquierda.
         ArrayList<Reglas.Regla> reglas = mReglas.getReglas(noTerminal);
+        //ArrayList<String> primerosAux = new ArrayList<>();
+        
+        //boolean salida = true;
+        boolean esSegundoRecorrido = false;
 
         //Obtenemos las reglas que empiezans con el simbolo "noTerminal"
-        for (Reglas.Regla regla : reglas) {
+        //for (Reglas.Regla regla : reglas) {
+        for(int i=0; i < reglas.size(); ++i){
+            Reglas.Regla regla = reglas.get(i);
             ArrayList<String> parteDerecha = regla.getParteDerecha();
 
             //Analizamos la parte derecha y obtenemos los primerosSinEpsilon
@@ -212,33 +219,49 @@ public class Prediccion {
                 //Si epsilon pertenece a primerosSinEpsilon(simbolo) 
                 ArrayList<String> primerosConEpsilon = mPrimeros.getPrimeros(simbolo); //Con epsilon si tuviese
                 
+                if(simbolo.equals(regla.getParteIzquierda()) && !esSegundoRecorrido){
+                    esSegundoRecorrido = true;
+                    reglas.add(regla);
+                    //salida = false;
+                    continue;
+                }
+                
                 //Si aun no se han calculado los primerosSinEpsilon
-                if(primerosConEpsilon.isEmpty())
+                if(primerosConEpsilon.isEmpty()){
+                    mPrimeros.removeNoTerminal(noTerminal);
                     return false;
+                }
                 
                 //Obtenemos los primerosSinEpsilon de simbolo -> primerosSinEpsilon(simbolo)
                 ArrayList<String> primerosSinEpsilon = mPrimeros.getPrimerosSinEpsilon(simbolo);
                 //Anyadimos el conjunto de primerosSinEpsilon(simbolo) a los primerosSinEpsilon(noTerminal)
                 for (String primero : primerosSinEpsilon) {
                     mPrimeros.addPrimeros(noTerminal, primero);
+                    //primerosAux.add(primero);
                 }
                 
                 if (primerosSinEpsilon.size() != primerosConEpsilon.size()) {
                     //Si solo tiene epsilon entonces anyadimos epsilon a primerosSinEpsilon(noTerminal)
-                    if (primerosConEpsilon.size() == 1) {
+                    if (primerosConEpsilon.size() == 1 && !simbolo.equals(regla.getParteIzquierda())) {
                         mPrimeros.addPrimeros(noTerminal, Reglas.EPSILON);
+                        //primerosAux.add(Reglas.EPSILON);
                     } else {
                         //Hay que añadir los primerosSinEpsilon del resto de simbolos
                         //de la parte derecha "noTerminal"
-                        for (int i = 1; i < parteDerecha.size(); ++i) {
-                            boolean esTerminal = mReglas.esTerminal(parteDerecha.get(i));
-                            if(!mPrimeros.exists(parteDerecha.get(i)) && !esTerminal)
+                        //for (int j = 1; j < parteDerecha.size(); ++j) {
+                        for (int j = 1; j < parteDerecha.size() && j < 2; ++j) {
+                            boolean esTerminal = mReglas.esTerminal(parteDerecha.get(j));
+                            if(!mPrimeros.exists(parteDerecha.get(j)) && !esTerminal){
+                                mPrimeros.removeNoTerminal(noTerminal);
                                 return false;
+                            }
                             
                             if(esTerminal)
-                                mPrimeros.addPrimeros(noTerminal, parteDerecha.get(i));
+                                mPrimeros.addPrimeros(noTerminal, parteDerecha.get(j));
+                                //primerosAux.add(parteDerecha.get(j));
                             else
-                                mPrimeros.addPrimeros(noTerminal, mPrimeros.getPrimeros(parteDerecha.get(i)));
+                                mPrimeros.addPrimeros(noTerminal, mPrimeros.getPrimeros(parteDerecha.get(j)));
+                                //primerosAux.addAll(mPrimeros.getPrimeros(parteDerecha.get(j)));
                         }
                     }
                 }
@@ -249,6 +272,11 @@ public class Prediccion {
 
         }
         
+        //if(!salida)
+        //    mPrimeros.removeNoTerminal(noTerminal);
+            //Borrar el noTerminal
+            //mPrimeros.addPrimeros(noTerminal, primerosAux);
+            
         return true;
 
     }
@@ -276,3 +304,4 @@ public class Prediccion {
 
 }
 
+//Como actuar si primer del noterminal es recursivo

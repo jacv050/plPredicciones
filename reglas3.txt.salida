@@ -1,11 +1,13 @@
-S -> { seis cuatro cinco tres uno epsilon dos }
-A -> { seis cuatro cinco tres epsilon }
-B -> { seis cuatro cinco epsilon tres }
-C -> { cinco epsilon }
-D -> { seis epsilon }
+S -> { dos epsilon cuatro uno }
+A -> { dos epsilon }
+B -> { epsilon cuatro }
+C -> { seis epsilon }
+D -> { uno cuatro }
+E -> { tres }
 
-S -> { $ dos }
-A -> { uno tres }
-B -> { cinco $ dos uno tres seis }
-C -> { $ dos seis uno tres }
-D -> { uno tres cuatro seis cinco $ dos }
+S -> { $ }
+A -> { cuatro $ cinco tres }
+B -> { seis $ tres cuatro cinco }
+C -> { $ cinco }
+D -> { tres }
+E -> { $ tres }

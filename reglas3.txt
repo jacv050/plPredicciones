@@ -7,4 +7,5 @@ B -> epsilon
 C -> seis A B
 C -> epsilon
 D -> uno A E
+D -> B
 E -> tres

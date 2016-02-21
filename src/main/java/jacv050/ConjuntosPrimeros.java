@@ -100,4 +100,8 @@ public class ConjuntosPrimeros {
     public boolean exists(String noTerminal){
         return mPrimeros.containsKey(noTerminal);
     }
+    
+    public void removeNoTerminal(String noTerminal){
+        mPrimeros.remove(noTerminal);
+    }
 }
