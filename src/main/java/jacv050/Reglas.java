@@ -18,6 +18,7 @@ public class Reglas {
     //ArrayList<String> terminales;
 
     public final static String EPSILON = "epsilon";
+    public final static String INICIAL = "$";
     
     public Reglas() {
         mReglas = new ArrayList<>();

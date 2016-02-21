@@ -25,15 +25,40 @@ public class ConjuntosSiguientes {
     }
     
     /**
-     * Anyade nuevos primeros a un simbolo no terminal
+     * Anyade nuevos siguientes a un simbolo no terminal
      * @param noTerminal
-     * @param newsiguientes 
+     * @param newsiguientes
      */
-    public void addSiguientes(String noTerminal, ArrayList<String> newsiguientes){
-        if(mSiguientes.containsKey(noTerminal)){
+    public void addSiguientes(String noTerminal, ArrayList<String> newsiguientes) {
+        if (mSiguientes.containsKey(noTerminal)) {
             ArrayList<String> primeros = mSiguientes.get(noTerminal);
-            newsiguientes.stream().forEach(primeros::add);
-        }else
+            for(String primero : newsiguientes){
+                if(!primeros.contains(primero))
+                    primeros.add(primero);
+            }
+            //newprimeros.stream().forEach(primeros::add);
+        } else {
             mSiguientes.put(noTerminal, newsiguientes);
+        }
+    }
+    
+        /**
+     * Anyade nuevos primeros a un simbolo no terminal
+     *
+     * @param noTerminal
+     * @param newsiguientes
+     */
+    public void addSiguientes(String noTerminal, String newsiguientes) {
+        ArrayList<String> primeros;
+        if (mSiguientes.containsKey(noTerminal)) {
+            primeros = mSiguientes.get(noTerminal);
+            if(!primeros.contains(newsiguientes))
+                primeros.add(newsiguientes);
+        } else {
+            primeros = new ArrayList();
+            primeros.add(newsiguientes);
+            mSiguientes.put(noTerminal, primeros);
+
+        }
     }
 }

@@ -27,12 +27,99 @@ public class Prediccion {
     private ConjuntosSiguientes mSiguientes;
     private String nombreFichero;
 
+    public Prediccion(String nombreFichero) {
+        this.nombreFichero = nombreFichero;
+        mReglas = new Reglas();
+        mPrimeros = new ConjuntosPrimeros();
+        
+        try {
+            FileReader fr = new FileReader(nombreFichero);
+            BufferedReader br = new BufferedReader(fr);
+            String cadena = "";
+
+            while ((cadena = br.readLine()) != null) {
+                mReglas.addRegla(cadena);
+            }
+            
+            obtainPrimeros();
+            generarSalida();
+
+            br.close();
+            fr.close();
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("No se ha encontrado el archivo.");
+        } catch (IOException ex) {
+            Logger.getLogger(Prediccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public final void generarSalida(){
+        
+        try {
+            FileWriter fw = new FileWriter(nombreFichero + ".salida");
+            PrintWriter pw = new PrintWriter(fw);
+            
+            ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
+            for(String noTerminal : noTerminales){
+                pw.print(noTerminal + " -> { ");
+                ArrayList<String> primeros = mPrimeros.getPrimeros(noTerminal);
+                for(String primero : primeros){
+                    pw.print(primero + " ");
+                }
+                pw.print("}");
+                
+                pw.println();
+            }
+            
+            pw.close();
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Prediccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    public ConjuntosPrimeros getConjuntosPrimeros(){
+        return mPrimeros;
+    }
+    
+    public boolean obtainSiguientesAux(String noTerminal){
+        
+        return true;
+    }
+    
+    public void obtainSiguientes(){
+                //ArrayList<String> salida = new ArrayList<>();
+        boolean[] simboloProcesados = new boolean[mReglas.getListaSimbolosNoTerminales().size()];
+        boolean procesados = true;
+        
+        ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
+        
+        //Anyadimos el simbolo inicial
+        
+        
+        do{
+            procesados = true;
+            for (int i=0; i<noTerminales.size(); ++i) {
+                if(!simboloProcesados[i])
+                    simboloProcesados[i] = obtainSiguientesAux(noTerminales.get(i));
+            }
+            
+            //Comprobamos si hemos encontrado todos los primeros
+            for(boolean sp : simboloProcesados){
+                procesados &= sp;
+            }
+        }while(!procesados);
+    }
+    
     /**
      * Devuelve el conjunto de primeros pertenecientes a un simbolo no terminal
      *
      * @param simboloNoTerminal El simbolo no terminal del que queremos el
      * conjunto de primeros
-     * @return Conjunto de primeros del simbolo no terminal
+     * @return Devuelve si ha sido capaz de obtener los primeros del simbolo
      */
     private boolean obtainPrimerosAux(String noTerminal) {
         //Obtenemos las reglas en las que aparece el simbolo terminal en la
@@ -119,62 +206,5 @@ public class Prediccion {
         }while(!procesados);
     }
 
-    public Prediccion(String nombreFichero) {
-        this.nombreFichero = nombreFichero;
-        mReglas = new Reglas();
-        mPrimeros = new ConjuntosPrimeros();
-        
-        try {
-            FileReader fr = new FileReader(nombreFichero);
-            BufferedReader br = new BufferedReader(fr);
-            String cadena = "";
-
-            while ((cadena = br.readLine()) != null) {
-                mReglas.addRegla(cadena);
-            }
-            
-            obtainPrimeros();
-            generarSalida();
-
-            br.close();
-            fr.close();
-
-        } catch (FileNotFoundException ex) {
-            System.err.println("No se ha encontrado el archivo.");
-        } catch (IOException ex) {
-            Logger.getLogger(Prediccion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-    
-    public final void generarSalida(){
-        
-        try {
-            FileWriter fw = new FileWriter(nombreFichero + ".salida");
-            PrintWriter pw = new PrintWriter(fw);
-            
-            ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
-            for(String noTerminal : noTerminales){
-                pw.print(noTerminal + " -> { ");
-                ArrayList<String> primeros = mPrimeros.getPrimeros(noTerminal);
-                for(String primero : primeros){
-                    pw.print(primero + " ");
-                }
-                pw.print("}");
-                
-                pw.println();
-            }
-            
-            pw.close();
-            fw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Prediccion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-
-    public ConjuntosPrimeros getConjuntosPrimeros(){
-        return mPrimeros;
-    }
-    
 }
+
