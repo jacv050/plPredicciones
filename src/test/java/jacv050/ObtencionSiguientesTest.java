@@ -52,15 +52,15 @@ public class ObtencionSiguientesTest {
     public void C1Reglas1Test(){
         String ficheroEntrada = "reglas1.txt";
         mPrediccion = new Prediccion(ficheroEntrada);
-        ConjuntosPrimeros real = mPrediccion.getConjuntosPrimeros();
+        ConjuntosSiguientes real = mPrediccion.getConjuntosSiguientes();
         
-        List<String> esperadoA = Arrays.asList("bad", "big", "cat", "cow");
-        List<String> esperadoB = Arrays.asList("big", "epsilon");
-        List<String> esperadoC = Arrays.asList("cat", "cow");
+        List<String> esperadoA = Arrays.asList("$");
+        List<String> esperadoB = Arrays.asList("cat", "cow");
+        List<String> esperadoC = Arrays.asList("$", "boss");
         
-        assertEqualsConjuntos(esperadoA, real.getPrimeros("A"));
-        assertEqualsConjuntos(esperadoB, real.getPrimeros("B"));
-        assertEqualsConjuntos(esperadoC, real.getPrimeros("C"));
+        assertEqualsConjuntos(esperadoA, real.getSiguientes("A"));
+        assertEqualsConjuntos(esperadoB, real.getSiguientes("B"));
+        assertEqualsConjuntos(esperadoC, real.getSiguientes("C"));
         //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
     }
     
@@ -69,15 +69,15 @@ public class ObtencionSiguientesTest {
     public void C2Reglas2Test(){
         String ficheroEntrada = "reglas2.txt";
         mPrediccion = new Prediccion(ficheroEntrada);
-        ConjuntosPrimeros real = mPrediccion.getConjuntosPrimeros();
+        ConjuntosSiguientes real = mPrediccion.getConjuntosSiguientes();
         
-        List<String> esperadoA = Arrays.asList("ant", "big", "bus", "cat", "cow");
-        List<String> esperadoB = Arrays.asList("big", "bus", "epsilon");
-        List<String> esperadoC = Arrays.asList("cat", "cow");
+        List<String> esperadoA = Arrays.asList("$", "all", "boss");
+        List<String> esperadoB = Arrays.asList("cat", "cow");
+        List<String> esperadoC = Arrays.asList("$", "all", "boss", "cat", "cow");
         
-        assertEqualsConjuntos(esperadoA, real.getPrimeros("A"));
-        assertEqualsConjuntos(esperadoB, real.getPrimeros("B"));
-        assertEqualsConjuntos(esperadoC, real.getPrimeros("C"));
+        assertEqualsConjuntos(esperadoA, real.getSiguientes("A"));
+        assertEqualsConjuntos(esperadoB, real.getSiguientes("B"));
+        assertEqualsConjuntos(esperadoC, real.getSiguientes("C"));
         //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
     }
     

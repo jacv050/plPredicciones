@@ -1,3 +1,7 @@
 A -> { big bus cat cow ant }
 B -> { big bus epsilon }
 C -> { cat cow }
+
+A -> { $ all boss }
+B -> { cat cow }
+C -> { $ all boss cat cow }

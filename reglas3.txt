@@ -1,11 +1,10 @@
-S -> A uno B C
-S -> S dos
-A -> B C D
-A -> A tres
+S -> A B C
+S -> D E
+A -> dos B tres
 A -> epsilon
-B -> D cuatro C tres
+B -> B cuatro C cinco
 B -> epsilon
-C -> cinco D B
+C -> seis A B
 C -> epsilon
-D -> seis
-D -> epsilon
+D -> uno A E
+E -> tres

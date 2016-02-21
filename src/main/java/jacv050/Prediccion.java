@@ -100,6 +100,10 @@ public class Prediccion {
         return mPrimeros;
     }
     
+    public ConjuntosSiguientes getConjuntosSiguientes(){
+        return mSiguientes;
+    }
+    
     public boolean obtainSiguientesAux(String noTerminal){
         
         ArrayList<Reglas.Regla> reglas = mReglas.getReglasSimboloDerecha(noTerminal);

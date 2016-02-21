@@ -3,3 +3,9 @@ A -> { seis cuatro cinco tres epsilon }
 B -> { seis cuatro cinco epsilon tres }
 C -> { cinco epsilon }
 D -> { seis epsilon }
+
+S -> { $ dos }
+A -> { uno tres }
+B -> { cinco $ dos uno tres seis }
+C -> { $ dos seis uno tres }
+D -> { uno tres cuatro seis cinco $ dos }
