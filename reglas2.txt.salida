@@ -5,3 +5,11 @@ C -> { cat cow }
 A -> { $ all boss }
 B -> { cat cow }
 C -> { $ all boss cat cow }
+
+A -> B C 			{ big bus cat cow }
+A -> ant A all 			{ ant }
+B -> big C 			{ big }
+B -> bus A boss 			{ bus }
+B -> epsilon 			{ cat cow }
+C -> cat 			{ cat }
+C -> cow 			{ cow }

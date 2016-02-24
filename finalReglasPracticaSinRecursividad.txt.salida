@@ -33,29 +33,29 @@ Term' -> { addop pyc }
 Factor -> { mulop addop pyc }
 
 S -> Sp main pari pard Bloque 			{ int double main }
-Sp -> Funcion Sp 			{ int double }
-Sp -> epsilon 			{ main }
-Funcion -> Tipo id pari pard Bloque 			{ int double }
-Tipo -> int 			{ int }
-Tipo -> double 			{ double }
-Bloque -> llavei SecInstr llaved 			{ llavei }
-SecInstr -> V SecInstr 			{ int double }
+Sp -> Funcion Sp 				{ int double }
+Sp -> epsilon 					{ main }
+Funcion -> Tipo id pari pard Bloque 		{ int double }
+Tipo -> int 					{ int }
+Tipo -> double 					{ double }
+Bloque -> llavei SecInstr llaved 		{ llavei }
+SecInstr -> V SecInstr 				{ int double }
 SecInstr -> Instr SecInstr 			{ id llavei }
-SecInstr -> epsilon 			{ llaved }
-V -> Tipo Var MV 			{ int double }
-Var -> id Array 			{ id }
-Array -> cori entero cord Array 			{ cori }
-Array -> epsilon 			{ coma pyc }
-MV -> coma Var MV 			{ coma }
-MV -> pyc 			{ pyc }
+SecInstr -> epsilon 				{ llaved }
+V -> Tipo Var MV 				{ int double }
+Var -> id Array 				{ id }
+Array -> cori entero cord Array 		{ cori }
+Array -> epsilon 				{ coma pyc }
+MV -> coma Var MV 				{ coma }
+MV -> pyc 					{ pyc }
 Instr -> id asig Expr pyc 			{ id }
-Instr -> Bloque 			{ llavei }
-Expr -> Term Expr' 			{ real entero id }
+Instr -> Bloque 				{ llavei }
+Expr -> Term Expr' 				{ real entero id }
 Expr' -> addop Term Expr' 			{ addop }
-Expr' -> epsilon 			{ pyc }
-Term -> Factor Term' 			{ real entero id }
+Expr' -> epsilon 				{ pyc }
+Term -> Factor Term' 				{ real entero id }
 Term' -> mulop Factor Term' 			{ mulop }
-Term' -> epsilon 			{ addop pyc }
-Factor -> real 			{ real }
-Factor -> entero 			{ entero }
-Factor -> id 			{ id }
+Term' -> epsilon 				{ addop pyc }
+Factor -> real 					{ real }
+Factor -> entero 				{ entero }
+Factor -> id 					{ id }

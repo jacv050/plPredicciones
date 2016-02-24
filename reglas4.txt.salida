@@ -7,3 +7,12 @@ A -> { $ a }
 B -> { c d e }
 C -> { d c e }
 D -> { $ a }
+
+A -> A a 			{ b c d e }
+A -> B C D 			{ b c d e }
+B -> b 			{ b }
+B -> epsilon 			{ c d e }
+C -> c 			{ c }
+C -> epsilon 			{ d c e }
+D -> d 			{ d }
+D -> C e 			{ c e }

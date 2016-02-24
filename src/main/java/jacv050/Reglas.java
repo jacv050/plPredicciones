@@ -27,6 +27,10 @@ public class Reglas {
 
     }
 
+    public ArrayList<Regla> getReglas(){
+        return mReglas;
+    }
+    
     public void addRegla(String regla) {
         String[] splitted = regla.split(" ");
 

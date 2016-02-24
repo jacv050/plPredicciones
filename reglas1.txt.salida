@@ -5,3 +5,10 @@ C -> { cat cow }
 A -> { $ }
 B -> { cat cow }
 C -> { $ boss }
+
+A -> B C 			{ big cat cow }
+A -> bad 			{ bad }
+B -> big C boss 			{ big }
+B -> epsilon 			{ cat cow }
+C -> cat 			{ cat }
+C -> cow 			{ cow }

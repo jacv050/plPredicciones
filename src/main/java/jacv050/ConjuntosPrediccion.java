@@ -13,7 +13,7 @@ import java.util.HashMap;
  * @author jacv050
  */
 public class ConjuntosPrediccion {
-    HashMap<String, ArrayList<String>> mPrediccion;
+    HashMap<Reglas.Regla, ArrayList<String>> mPrediccion;
     
     public ConjuntosPrediccion(){
         mPrediccion = new HashMap<>();
@@ -23,7 +23,7 @@ public class ConjuntosPrediccion {
         return mPrediccion.get(noTerminal);
     }
     
-    public void addSiguientes(String noTerminal, ArrayList<String> newprediccion) {
+    public void addPrediccion(Reglas.Regla noTerminal, ArrayList<String> newprediccion) {
         if (mPrediccion.containsKey(noTerminal)) {
             ArrayList<String> primeros = mPrediccion.get(noTerminal);
             for(String primero : newprediccion){
@@ -36,7 +36,7 @@ public class ConjuntosPrediccion {
         }
     }
 
-    public void addSiguientes(String noTerminal, String newprediccion) {
+    public void addPrediccion(Reglas.Regla noTerminal, String newprediccion) {
         ArrayList<String> primeros;
         if (mPrediccion.containsKey(noTerminal)) {
             primeros = mPrediccion.get(noTerminal);
@@ -48,5 +48,9 @@ public class ConjuntosPrediccion {
             mPrediccion.put(noTerminal, primeros);
 
         }
+    }
+    
+    public ArrayList<String> getPrediccion(Reglas.Regla noTerminal){
+        return mPrediccion.get(noTerminal);
     }
 }

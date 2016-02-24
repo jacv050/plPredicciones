@@ -11,3 +11,15 @@ B -> { seis $ cinco tres cuatro }
 C -> { $ cinco }
 D -> { tres }
 E -> { $ tres }
+
+S -> A B C 			{ dos cuatro seis $ }
+S -> D E 			{ uno cuatro tres }
+A -> dos B tres 			{ dos }
+A -> epsilon 			{ cuatro seis $ cinco tres }
+B -> B cuatro C cinco 			{ cuatro }
+B -> epsilon 			{ seis $ cinco tres cuatro }
+C -> seis A B 			{ seis }
+C -> epsilon 			{ $ cinco }
+D -> uno A E 			{ uno }
+D -> B 			{ cuatro tres }
+E -> tres 			{ tres }

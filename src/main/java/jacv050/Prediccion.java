@@ -25,6 +25,7 @@ public class Prediccion {
     private Reglas mReglas;
     private ConjuntosPrimeros mPrimeros;
     private ConjuntosSiguientes mSiguientes;
+    private ConjuntosPrediccion mPrediccion;
     private String nombreFichero;
 
     public Prediccion(String nombreFichero) {
@@ -32,6 +33,7 @@ public class Prediccion {
         mReglas = new Reglas();
         mPrimeros = new ConjuntosPrimeros();
         mSiguientes = new ConjuntosSiguientes();
+        mPrediccion = new ConjuntosPrediccion();
         
         try {
             FileReader fr = new FileReader(nombreFichero);
@@ -42,7 +44,7 @@ public class Prediccion {
                 mReglas.addRegla(cadena);
             }
             
-            if(obtainPrimeros() && obtainSiguientes()){
+            if(obtainPrimeros() && obtainSiguientes() && obtainPrediccion()){
                 generarSalida();
             }
 
@@ -88,6 +90,26 @@ public class Prediccion {
                 pw.println();
             }
             
+            //Salida de predicciones
+            pw.println();
+            ArrayList<Reglas.Regla> reglas = mReglas.getReglas();
+            for(Reglas.Regla regla : reglas){
+                pw.print(regla.getParteIzquierda());
+                pw.print(" -> ");
+                for(String s : regla.getParteDerecha())
+                    pw.print(s + " ");
+                
+                pw.print("\t\t\t");
+                
+                pw.print("{ ");
+                for(String s : mPrediccion.getPrediccion(regla)){
+                    pw.print(s + " ");
+                }
+                pw.print("}");
+                
+                pw.println();
+            }
+            
             pw.close();
             fw.close();
         } catch (IOException ex) {
@@ -102,6 +124,57 @@ public class Prediccion {
     
     public ConjuntosSiguientes getConjuntosSiguientes(){
         return mSiguientes;
+    }
+    
+    public ConjuntosPrediccion getConjuntosPrediccion(){
+        return mPrediccion;
+    }
+    
+    public boolean obtainPrediccionAux(Reglas.Regla regla){
+        
+        
+        //Si tiene epsilon
+        boolean conEpsilon = true;
+        ArrayList<String> parteDerecha = regla.getParteDerecha();
+        for(int i=0; conEpsilon && i<parteDerecha.size(); ++i){
+            String simbolo = parteDerecha.get(i);
+            ArrayList<String> primerosSinEpsilon = null;
+            ArrayList<String> primerosConEpsilon = null;
+            boolean esTerminal = mReglas.esTerminal(simbolo);
+            if(!esTerminal){
+                primerosSinEpsilon = mPrimeros.getPrimerosSinEpsilon(simbolo);
+                primerosConEpsilon = mPrimeros.getPrimeros(simbolo);
+                
+                mPrediccion.addPrediccion(regla, primerosSinEpsilon);
+                if(primerosConEpsilon.size() == primerosSinEpsilon.size()){
+                    conEpsilon = false;
+                }
+            }else if(!mReglas.esEpsilon(simbolo)){
+                mPrediccion.addPrediccion(regla, simbolo);
+                conEpsilon = false;
+            //Si es epsilon
+            }else{
+                break;
+            }
+        }
+        
+        if(conEpsilon)
+            mPrediccion.addPrediccion(regla, mSiguientes.getSiguientes(regla.getParteIzquierda()));
+        
+        return true;
+    }
+    
+    public boolean obtainPrediccion(){
+                //ArrayList<String> salida = new ArrayList<>();
+        //boolean[] simboloProcesados = new boolean[mReglas.getListaSimbolosNoTerminales().size()];
+        
+        ArrayList<Reglas.Regla> reglas = mReglas.getReglas();
+        
+        for(Reglas.Regla regla : reglas){
+            obtainPrediccionAux(regla);
+        }
+        
+        return true;
     }
     
     public boolean obtainSiguientesAux(String noTerminal){
