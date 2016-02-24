@@ -1,13 +1,13 @@
-S -> { dos epsilon cuatro uno }
+S -> { dos cuatro seis epsilon uno tres }
 A -> { dos epsilon }
 B -> { epsilon cuatro }
 C -> { seis epsilon }
-D -> { uno cuatro }
+D -> { uno cuatro epsilon }
 E -> { tres }
 
 S -> { $ }
-A -> { cuatro $ cinco tres }
-B -> { seis $ tres cuatro cinco }
+A -> { cuatro seis $ cinco tres }
+B -> { seis $ cinco tres cuatro }
 C -> { $ cinco }
 D -> { tres }
 E -> { $ tres }

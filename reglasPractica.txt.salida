@@ -1,0 +1,29 @@
+S -> { int double main }
+Sp -> { int double epsilon }
+Funcion -> { int double }
+Tipo -> { int double }
+Bloque -> { llavei }
+SecInstr -> { int double id llavei epsilon }
+V -> { int double }
+Var -> { id }
+Array -> { cori epsilon }
+MV -> { coma pyc }
+Instr -> { id llavei }
+Expr -> { real entero id }
+Term -> { real entero id }
+Factor -> { real entero id }
+
+S -> { $ }
+Sp -> { main }
+Funcion -> { int double main }
+Tipo -> { id }
+Bloque -> { $ int double main id llavei llaved }
+SecInstr -> { llaved }
+V -> { int double id llavei llaved }
+Var -> { coma pyc }
+Array -> { coma pyc }
+MV -> { int double id llavei llaved }
+Instr -> { int double id llavei llaved }
+Expr -> { pyc addop }
+Term -> { pyc addop mulop }
+Factor -> { pyc addop mulop }

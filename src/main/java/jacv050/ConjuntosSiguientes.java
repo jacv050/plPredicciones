@@ -65,4 +65,8 @@ public class ConjuntosSiguientes {
 
         }
     }
+    
+    public void removeNoTerminal(String noTerminal){
+        mSiguientes.remove(noTerminal);
+    }
 }

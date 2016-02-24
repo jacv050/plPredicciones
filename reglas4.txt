@@ -1,0 +1,8 @@
+A -> A a
+A -> B C D
+B -> b
+B -> epsilon
+C -> c
+C -> epsilon
+D -> d
+D -> C e

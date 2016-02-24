@@ -1,0 +1,9 @@
+A -> { b c d e }
+B -> { b epsilon }
+C -> { c epsilon }
+D -> { d c e }
+
+A -> { $ a }
+B -> { c d e }
+C -> { d c e }
+D -> { $ a }

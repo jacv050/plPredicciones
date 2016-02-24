@@ -42,6 +42,9 @@ public class ObtencionSiguientesTest {
     }
 
     public void assertEqualsConjuntos(List<String> esperados, List<String> reales){
+        if(esperados.size() != reales.size())
+            fail();
+        
         for(String real : reales){
             if(!esperados.contains(real))
                 fail();
@@ -93,7 +96,7 @@ public class ObtencionSiguientesTest {
         List<String> esperadoC = Arrays.asList("cinco", "$");
         List<String> esperadoD = Arrays.asList("tres");
         List<String> esperadoE = Arrays.asList("$", "tres");
-        List<String> esperadoS = Arrays.asList("$", "tres");
+        List<String> esperadoS = Arrays.asList("$");
         
         
         assertEqualsConjuntos(esperadoA, real.getSiguientes("A"));

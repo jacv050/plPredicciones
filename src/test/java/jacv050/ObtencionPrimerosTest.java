@@ -43,6 +43,9 @@ public class ObtencionPrimerosTest {
     }
 
     public void assertEqualsConjuntos(List<String> esperados, List<String> reales){
+        if(esperados.size() != reales.size())
+            fail();
+            
         for(String real : reales){
             if(!esperados.contains(real))
                 fail();
@@ -92,9 +95,9 @@ public class ObtencionPrimerosTest {
         List<String> esperadoA = Arrays.asList("dos", "epsilon");
         List<String> esperadoB = Arrays.asList("epsilon", "cuatro");
         List<String> esperadoC = Arrays.asList("seis", "epsilon");
-        List<String> esperadoD = Arrays.asList("uno", "epsilon", "cuatro");
+        List<String> esperadoD = Arrays.asList("uno", "cuatro", "epsilon");
         List<String> esperadoE = Arrays.asList("tres");
-        List<String> esperadoS = Arrays.asList("dos", "cuatro", "seis", "epsilon", "uno", "tres");
+        List<String> esperadoS = Arrays.asList("dos", "cuatro", "epsilon", "uno", "tres", "seis");
         
         
         assertEqualsConjuntos(esperadoA, real.getPrimeros("A"));
@@ -106,6 +109,25 @@ public class ObtencionPrimerosTest {
         //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
     }
     
+    
+    @Test
+    public void C4Reglas4Test(){
+        //HAY QUE MIRAR EL RESTOS DE SIMBOLOS SI EL SIMBOLO INTERNO NO ES TERMINAL
+        String ficheroEntrada = "reglas4.txt";
+        mPrediccion = new Prediccion(ficheroEntrada);
+        ConjuntosPrimeros real = mPrediccion.getConjuntosPrimeros();
+        
+        List<String> esperadoA = Arrays.asList("b", "c", "d", "e");
+        List<String> esperadoB = Arrays.asList("b", "epsilon");
+        List<String> esperadoC = Arrays.asList("c", "epsilon");
+        List<String> esperadoD = Arrays.asList("d", "c", "e"); 
+        
+        assertEqualsConjuntos(esperadoA, real.getPrimeros("A"));
+        assertEqualsConjuntos(esperadoB, real.getPrimeros("B"));
+        assertEqualsConjuntos(esperadoC, real.getPrimeros("C"));
+        assertEqualsConjuntos(esperadoD, real.getPrimeros("D"));
+        //assertEquals(esperadoA, real.getPrimeros(ficheroEntrada));
+    }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //

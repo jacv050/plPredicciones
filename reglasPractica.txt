@@ -1,0 +1,25 @@
+S -> Sp main pari pard Bloque
+Sp -> Funcion Sp
+Sp -> epsilon
+Funcion -> Tipo id pari pard Bloque
+Tipo -> int
+Tipo -> double
+Bloque -> llavei SecInstr llaved
+SecInstr -> V SecInstr
+SecInstr -> Instr SecInstr
+SecInstr -> epsilon
+V -> Tipo Var MV
+Var -> id Array
+Array -> cori entero cord Array
+Array -> epsilon
+MV -> coma Var MV
+MV -> pyc
+Instr -> id asig Expr pyc
+Instr -> Bloque
+Expr -> Expr addop Term
+Expr -> Term
+Term -> Term mulop Factor
+Term -> Factor
+Factor -> real
+Factor -> entero
+Factor -> id

@@ -42,9 +42,9 @@ public class Prediccion {
                 mReglas.addRegla(cadena);
             }
             
-            obtainPrimeros();
-            obtainSiguientes();
-            generarSalida();
+            if(obtainPrimeros() && obtainSiguientes()){
+                generarSalida();
+            }
 
             br.close();
             fr.close();
@@ -121,11 +121,14 @@ public class Prediccion {
                     
                     //Si epsilon pertence a siguientes(posicion+1)
                     if(primerosSinEpsilon.size() != primerosConEpsilon.size()){
-                        ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
+                        //TODO ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
+                        ArrayList<String> siguientes = mSiguientes.getSiguientes(parteDerecha.get(posicionSimbolo+1));
                         
                         //Si aun no se han calculado siguientes devolver false
-                        if(siguientes == null)
+                        if(siguientes == null){
+                            mSiguientes.removeNoTerminal(noTerminal);
                             return false;
+                        }
                         
                         //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
                         mSiguientes.addSiguientes(noTerminal, siguientes);
@@ -134,8 +137,10 @@ public class Prediccion {
                     ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
                         
                     //Si aun no se han calculado siguientes devolver false
-                    if(siguientes == null)
+                    if(siguientes == null){
+                        mSiguientes.removeNoTerminal(noTerminal);
                         return false;
+                    }
                         
                     //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
                     mSiguientes.addSiguientes(noTerminal, siguientes);
@@ -147,8 +152,10 @@ public class Prediccion {
                 ArrayList<String> siguientes = mSiguientes.getSiguientes(regla.getParteIzquierda());
                 
                 //Si aun no se han calculado siguientes devolver false
-                if(siguientes == null)
+                if(siguientes == null){
+                    mSiguientes.removeNoTerminal(noTerminal);
                     return false;
+                }
                 
                 //Anyadimos los siguientes del simbolo no terminal de la parte izquierda de la regla
                 mSiguientes.addSiguientes(noTerminal, siguientes);
@@ -158,7 +165,7 @@ public class Prediccion {
         return true;
     }
     
-    public void obtainSiguientes(){
+    public boolean obtainSiguientes(){
                 //ArrayList<String> salida = new ArrayList<>();
         boolean[] simboloProcesados = new boolean[mReglas.getListaSimbolosNoTerminales().size()];
         boolean procesados = true;
@@ -167,8 +174,14 @@ public class Prediccion {
         
         //Anyadimos el simbolo inicial
         mSiguientes.addSiguientes(noTerminales.get(0), Reglas.INICIAL);
+        int iteraciones = 0;
         
         do{
+            if(iteraciones > noTerminales.size()){
+                System.err.println("Error: Puede haber entrado en un bucle infinito por un error en la gramatica");
+                return false;
+            }
+            
             procesados = true;
             for (int i=0; i<noTerminales.size(); ++i) {
                 if(!simboloProcesados[i])
@@ -179,7 +192,11 @@ public class Prediccion {
             for(boolean sp : simboloProcesados){
                 procesados &= sp;
             }
+            
+            iteraciones++;
         }while(!procesados);
+        
+        return true;
     }
     
     /**
@@ -242,25 +259,39 @@ public class Prediccion {
                 
                 if (primerosSinEpsilon.size() != primerosConEpsilon.size()) {
                     //Si solo tiene epsilon entonces anyadimos epsilon a primerosSinEpsilon(noTerminal)
-                    if (primerosConEpsilon.size() == 1 && !simbolo.equals(regla.getParteIzquierda())) {
+                    //if (primerosConEpsilon.size() == 1 && !simbolo.equals(regla.getParteIzquierda())) {
+                    if (regla.getParteDerecha().size() == 1 && !simbolo.equals(regla.getParteIzquierda())) {
+                    //if (i == regla.getParteDerecha().size()-1 && !simbolo.equals(regla.getParteIzquierda())) {
                         mPrimeros.addPrimeros(noTerminal, Reglas.EPSILON);
                         //primerosAux.add(Reglas.EPSILON);
                     } else {
                         //Hay que añadir los primerosSinEpsilon del resto de simbolos
                         //de la parte derecha "noTerminal"
-                        //for (int j = 1; j < parteDerecha.size(); ++j) {
-                        for (int j = 1; j < parteDerecha.size() && j < 2; ++j) {
+                        
+                        boolean salir = false;
+                        for (int j = 1; j < parteDerecha.size() && !salir; ++j) {
+                        //for (int j = 1; j < parteDerecha.size() && j < 2; ++j) {
                             boolean esTerminal = mReglas.esTerminal(parteDerecha.get(j));
                             if(!mPrimeros.exists(parteDerecha.get(j)) && !esTerminal){
                                 mPrimeros.removeNoTerminal(noTerminal);
                                 return false;
                             }
                             
-                            if(esTerminal)
+                            if(esTerminal){
                                 mPrimeros.addPrimeros(noTerminal, parteDerecha.get(j));
+                                salir = true;
                                 //primerosAux.add(parteDerecha.get(j));
-                            else
-                                mPrimeros.addPrimeros(noTerminal, mPrimeros.getPrimeros(parteDerecha.get(j)));
+                            }else{
+                                ArrayList<String> pd = mPrimeros.getPrimeros(parteDerecha.get(j));
+                                ArrayList<String> pdsinep = mPrimeros.getPrimerosSinEpsilon(parteDerecha.get(j));
+                                mPrimeros.addPrimeros(noTerminal, pdsinep);
+                                //Si no tiene epsilon, salimos del bucle
+                                if(pd.size() == pdsinep.size())
+                                    salir = true;
+                                else if(j == parteDerecha.size()-1)
+                                    mPrimeros.addPrimeros(noTerminal, Reglas.EPSILON);
+                                    
+                            }
                                 //primerosAux.addAll(mPrimeros.getPrimeros(parteDerecha.get(j)));
                         }
                     }
@@ -281,14 +312,20 @@ public class Prediccion {
 
     }
 
-    private void obtainPrimeros() {
+    private boolean obtainPrimeros() {
         //ArrayList<String> salida = new ArrayList<>();
         boolean[] simboloProcesados = new boolean[mReglas.getListaSimbolosNoTerminales().size()];
         boolean procesados = true;
         
         ArrayList<String> noTerminales = mReglas.getListaSimbolosNoTerminales();
+        int iteraciones = 0;
         
         do{
+            if(iteraciones > noTerminales.size()){
+                System.err.println("Error: Puede haber entrado en un bucle infinito por un error en la gramatica");
+                return false;
+            }
+            
             procesados = true;
             for (int i=0; i<noTerminales.size(); ++i) {
                 if(!simboloProcesados[i])
@@ -299,9 +336,14 @@ public class Prediccion {
             for(boolean sp : simboloProcesados){
                 procesados &= sp;
             }
+            
+            iteraciones++;
         }while(!procesados);
+        
+        return true;
     }
 
 }
 
 //Como actuar si primer del noterminal es recursivo
+//Duda respecto siguiente en caso de que contenga epsilon el de la posicion +1
